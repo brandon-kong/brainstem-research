@@ -2,7 +2,7 @@ import pandas as pd
 from typing import Dict, Union
 
 # Type definition for the data node
-DataNode = Dict[str, Union[pd.DataFrame, 'DataNode']]
+DataNode = Dict[str, Union[pd.DataFrame, 'DataNode', None]]
 
 
 class DataTree:
@@ -32,7 +32,7 @@ class DataTree:
         for key in keys:
             current_dict = current_dict.get(key, {})
 
-        return current_dict
+        return current_dict if isinstance(current_dict, pd.DataFrame) else None
     
     def __str__(self):
         return str(self.data)
