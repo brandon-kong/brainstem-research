@@ -1,6 +1,7 @@
+from providers.data.DataProvider import DataProvider
 
 def main ():
-    pass
+    DataProvider
 
 if __name__ == '__main__':
     main()
