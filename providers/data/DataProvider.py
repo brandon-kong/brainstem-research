@@ -17,7 +17,6 @@ class DataProvider(object):
 
     def __new__(cls):
         if cls.__instance is None:
-            print('Creating the DataProvider instance')
             cls.__instance = super(DataProvider, cls).__new__(cls)
         return cls.__instance
 
