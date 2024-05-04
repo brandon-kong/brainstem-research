@@ -12,3 +12,6 @@ class LoggerFactory:
     
     def __init__(self) -> None:
         raise RuntimeError('Cannot instantiate a LoggerFactory object')
+    
+    def __new__(cls):
+        raise RuntimeError('Cannot instantiate a LoggerFactory object')
