@@ -10,3 +10,6 @@ __pycache__/
 # Logs
 *.log.txt
 *.log
+
+# Config
+config.json
