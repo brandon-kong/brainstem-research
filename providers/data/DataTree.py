@@ -18,6 +18,9 @@ class DataTree(Generic[T]):
         self.data = {}
 
     def add_data(self, key: str, data: T | Dict[str, Union[T, 'DataNode']]):
+        if not key:
+            raise ValueError('Key cannot be empty')
+        
         keys = key.split('/')
         current_dict: DataNode = self.data
 
@@ -30,10 +33,16 @@ class DataTree(Generic[T]):
                 raise ValueError(f'Key {key} is already a value')
             
             current_dict = current_dict[key]
+
+        if keys[-1] in current_dict and isinstance(current_dict[keys[-1]], dict):
+            raise ValueError(f'Key {keys[-1]} is already a dictionary')
         
         current_dict[keys[-1]] = data
 
     def get_data(self, key: str) -> Union[T, None]:
+        if not key:
+            return None
+        
         keys = key.split('/')
         current_dict: DataNode = self.data
 

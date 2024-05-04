@@ -13,6 +13,9 @@ class TestDataTree(unittest.TestCase):
         self.data_tree.add_data('test1/test2', 'test')
         self.assertEqual(self.data_tree.get_data('test1/test2'), 'test')
 
+    def test_add_data_invalid_key(self):
+        self.assertRaises(ValueError, self.data_tree.add_data, '', 'test')
+
     def test_add_data_override(self):
         self.data_tree.add_data('test', 'test')
         self.assertEqual(self.data_tree.get_data('test'), 'test')
