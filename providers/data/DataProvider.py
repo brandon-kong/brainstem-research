@@ -20,6 +20,9 @@ class DataProvider(Generic[T]):
     
     def remove_data(self, key: str):
         self.data.remove_data(key)
+
+    def length(self) -> int:
+        return self.data.length()
     
     def __str__(self):
         return str(self.data)

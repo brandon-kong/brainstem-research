@@ -33,6 +33,9 @@ class ConfigurationProvider:
     
     def remove_configuration(self, key: str):
         self.data_provider.remove_data(key)
+
+    def length(self) -> int:
+        return self.data_provider.length()
     
     def __str__(self):
         return str(self.data_provider)
