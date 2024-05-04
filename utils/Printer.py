@@ -43,3 +43,4 @@ class Color:
     MAGENTA = '95'
     YELLOW = '93'
     GREEN = '92'
+    RED = '91'

@@ -31,27 +31,51 @@ class Menu:
             printer: Printer,
             logger: LoggerFactory,
             start_message: str = 'Please select an option from the menu below:',
+            include_exit: bool = False,
+            include_back: bool = True
             ):
         
         self.options = options
         self.start_message = start_message
+        self.include_exit = include_exit
+        self.include_back = include_back
 
         self.printer = printer
         self.logger = logger
 
     def run(self):
         while True:
-            self.printer.print(f'{self.start_message}\n')
+            self.printer.print(f'\n{self.start_message}\n')
             
-            enumerated = enumerate(self.options)
-            
-            for index, option in enumerate(self.options):
-                self.printer.custom(f'{index + 1}. {option}', Color.CYAN)
+            if self.include_exit:
+                self.options['Exit'] = lambda: 'back'
+
+            if self.include_back:
+                self.options['Back'] = lambda: 'back'
+
+
+            enumerated = enumerate(self.options.keys())
+
+            for i, option in enumerated:
+                if option == 'Back':
+                    self.printer.custom(f'[back] {option}', color=Color.YELLOW)
+                elif option == 'Exit':
+                    self.printer.custom(f'[exit] {option}', color=Color.RED)
+
+                else:
+                    self.printer.print(f'{i + 1}. {option}')
 
             # Print an extra line
             print()
 
             choice = input('Enter your choice: ')
+            print()
+
+            if choice.lower() == 'exit' and self.include_exit:
+                break
+
+            if choice.lower() == 'back' and self.include_back:
+                return
 
             # Check if the choice is a number
             if not choice.isdigit():
@@ -59,15 +83,15 @@ class Menu:
                 continue
 
             choice = int(choice) - 1
-
+            
             if choice < 0 or choice >= len(self.options):
                 self.printer.error('Invalid option')
                 continue
 
-            choice = list(enumerated)[choice][1]
+            choice = list(self.options.keys())[choice]
 
             action = self.options.get(choice)
-
+        
             if action:
                 action()
             else:

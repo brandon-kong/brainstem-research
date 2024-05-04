@@ -12,7 +12,7 @@ printer = Printer()
 logger = LoggerFactory.make_logger(LOGGER_FILE_SUFFIX, LOG_FILE)
 
 def exit_program():
-    printer.error('\nExiting program...\n')
+    printer.error('Exiting program...\n')
     logger.log('Program ended.')
 
     exit()
@@ -47,7 +47,7 @@ def main ():
 
         try:
             config.load_configuration(config_file, CONFIG_KEYS)
-            printer.success(f'Configuration loaded successfully: {config.length()} config(s) loaded.\n')
+            printer.success(f'Configuration loaded successfully: {config.length()} config(s) loaded.')
 
         except Exception as e:
             printer.error(f'Error loading configuration: {e}\n')
@@ -56,13 +56,21 @@ def main ():
 
 
     options = {
-        'Perform K-Means Clustering': lambda: printer.print('Print'),
+        'Perform K-Means Clustering': lambda: Menu({
+            'Perform K-Means Clustering on all data': lambda: printer.print('Print'),
+            'Perform K-Means Clustering on a subset of data': lambda: printer.print('Print'),
+            'Perform K-Means Clustering on a subset of genes': lambda: printer.print('Print'),
+            'Perform K-Means Clustering on a subset of samples': lambda: printer.print('Print'),
+            'Perform K-Means Clustering on a subset of genes and samples': lambda: printer.print('Print'),
+            'Back': lambda: printer.print('Print')
+        }, printer, logger).run()
+        ,
+
         'Perform PCA': lambda: printer.print('Print'),
         'Perform t-SNE': lambda: printer.print('Print'),
-        'Exit': exit_program
     }
     # Print the menu
-    menu = Menu(options, printer, logger)
+    menu = Menu(options, printer, logger, include_exit=True, include_back=False)
 
     # Run the menu
     menu.run()
