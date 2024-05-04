@@ -12,7 +12,7 @@ printer = Printer()
 logger = LoggerFactory.make_logger(LOG_FILE)
 
 def exit_program():
-    printer.error('Exiting program...')
+    printer.error('\nExiting program...\n')
     logger.log('Program ended.')
 
     exit()

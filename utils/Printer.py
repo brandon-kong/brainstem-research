@@ -18,7 +18,7 @@ class Printer:
         print(message)
 
     def error(self, message: str):
-        print(f'\033[91mError: {message}\033[0m')
+        print(f'\033[91m{message}\033[0m')
 
     def warning(self, message: str):
         print(f'\033[93mWarning: {message}\033[0m')

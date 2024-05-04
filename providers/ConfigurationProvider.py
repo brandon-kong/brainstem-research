@@ -12,6 +12,9 @@ class ConfigurationProvider:
     """
     
     __instance: 'ConfigurationProvider' = None
+    printer: Printer = None
+    logger: Logger = None
+
     data_provider: Final[DataProvider[JSONable]] = DataProvider[JSONable]()
 
     def __new__(cls, printer: Printer, logger: Logger) -> 'ConfigurationProvider':
@@ -31,10 +34,10 @@ class ConfigurationProvider:
                     self.add_configuration(key, data)
                 else:
                     # Invalid type
-                    print(f"Invalid type for key: {key}. Expected {valid_keys[key]}, got {type(data)}")
+                    self.printer.warning(f"Invalid type for key: {key}. Expected {valid_keys[key]}, got {type(data)}")
             else:
                 # Invalid key
-                continue
+                self.printer.warning(f"Invalid key: {key}")
     
     def add_configuration(self, key: str, data: JSONable):
         self.data_provider.add_data(key, data)
