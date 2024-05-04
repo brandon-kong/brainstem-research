@@ -5,6 +5,7 @@
 # - clear: Clears the contents of the log file
 
 import os
+from datetime import datetime
 
 log_file_suffix = '.log.txt'
 
@@ -26,8 +27,12 @@ class Logger:
             self.create_file()
 
     def log(self, message):
+
+        # get the current time
+        time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
         with open(self.log_file, 'a') as f:
-            f.write(message + '\n')
+            f.write(f'{time}: {message}\n')
 
     def read(self):
         # make sure the file exists
