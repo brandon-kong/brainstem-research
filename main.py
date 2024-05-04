@@ -6,10 +6,10 @@ from utils.Printer import Printer
 from utils.FileUtility import FileUtility
 from utils.InputUtility import InputUtility
 
-from utils.constants import CONFIG_FILE, LOG_FILE, CONFIG_KEYS
+from utils.constants import CONFIG_FILE, LOGGER_FILE_SUFFIX, LOG_FILE, CONFIG_KEYS
 
 printer = Printer()
-logger = LoggerFactory.make_logger(LOG_FILE)
+logger = LoggerFactory.make_logger(LOGGER_FILE_SUFFIX, LOG_FILE)
 
 def exit_program():
     printer.error('\nExiting program...\n')

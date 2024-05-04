@@ -7,7 +7,7 @@ from utils.constants import LOGGER_FILE_SUFFIX
 
 class TestLogger(unittest.TestCase):
     def setUp(self):
-        self.logger = LoggerFactory.make_logger(f'test{LOGGER_FILE_SUFFIX}')
+        self.logger = LoggerFactory.make_logger(LOGGER_FILE_SUFFIX, f'test{LOGGER_FILE_SUFFIX}')
         self.loggers = [self.logger]
 
     def tearDown(self) -> None:
@@ -17,13 +17,13 @@ class TestLogger(unittest.TestCase):
             del logger
 
     def test_make_logger_creates_same_logger_for_same_name(self):
-        logger1 = LoggerFactory.make_logger(f'test{LOGGER_FILE_SUFFIX}')
-        logger2 = LoggerFactory.make_logger(f'test{LOGGER_FILE_SUFFIX}')
+        logger1 = LoggerFactory.make_logger(LOGGER_FILE_SUFFIX, f'test{LOGGER_FILE_SUFFIX}')
+        logger2 = LoggerFactory.make_logger(LOGGER_FILE_SUFFIX, f'test{LOGGER_FILE_SUFFIX}')
         self.assertEqual(logger1, logger2)
 
     def test_make_logger_creates_different_logger_for_different_name(self):
-        logger1 = LoggerFactory.make_logger(f'test{LOGGER_FILE_SUFFIX}')
-        logger2 = LoggerFactory.make_logger(f'test2{LOGGER_FILE_SUFFIX}')
+        logger1 = LoggerFactory.make_logger(LOGGER_FILE_SUFFIX, f'test{LOGGER_FILE_SUFFIX}')
+        logger2 = LoggerFactory.make_logger(LOGGER_FILE_SUFFIX, f'test2{LOGGER_FILE_SUFFIX}')
         self.assertNotEqual(logger1, logger2)
 
         # Add the logger to the list of loggers to delete

@@ -11,21 +11,14 @@ class ConfigurationProvider:
     The ConfigurationProvider class is a singleton class that provides a way to store and retrieve configuration data.
     """
     
-    __instance: 'ConfigurationProvider' = None
     printer: Printer = None
     logger: Logger = None
 
     data_provider: Final[DataProvider[JSONable]] = DataProvider[JSONable]()
-
-    def __new__(cls, printer: Printer, logger: Logger) -> 'ConfigurationProvider':
-        if cls.__instance is None:
-            cls.__instance = super(ConfigurationProvider, cls).__new__(cls)
-            cls.__instance.printer = printer
-            cls.__instance.logger = logger
-        return cls.__instance
     
     def __init__(self, printer: Printer, logger: Logger) -> None:
-        pass
+        self.printer = printer
+        self.logger = logger
 
     def load_configuration(self, configuration: Dict[str, JSONable], valid_keys: Dict[str, type]):
         for key, data in configuration.items():
@@ -36,13 +29,13 @@ class ConfigurationProvider:
                     if isinstance(data, dict):
                         self.load_configuration(data, valid_type_or_dict)
                     else:
-                        print(f"Invalid type for key: {key}. Expected dict, got {type(data)}")
+                        self.logger.error(f"Invalid type for key: {key}. Expected {valid_type_or_dict}, got {type(data)}")
                 elif isinstance(data, valid_type_or_dict):
                     self.add_configuration(key, data)
                 else:
-                    print(f"Invalid type for key: {key}. Expected {valid_type_or_dict}, got {type(data)}")
+                    self.logger.error(f"Invalid type for key: {key}. Expected {valid_type_or_dict}, got {type(data)}")
             else:
-                print(f"Invalid key: {key}")
+                self.logger.error(f'Invalid key: {key}')
     
     def add_configuration(self, key: str, data: JSONable):
         self.data_provider.add_data(key, data)
