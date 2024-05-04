@@ -7,7 +7,9 @@
 import os
 from datetime import datetime
 
-log_file_suffix = '.log.txt'
+from utils.FileUtility import FileUtility
+
+from utils.constants import LOGGER_FILE_SUFFIX
 
 class Logger:
     """
@@ -17,14 +19,14 @@ class Logger:
     def __init__(self, log_file: str):
 
         # Check if the log file has the correct suffix
-        if not log_file.endswith(log_file_suffix):
+        if not log_file.endswith(LOGGER_FILE_SUFFIX):
             raise ValueError('Log file must have the correct suffix')
         
         self.log_file = log_file
         
         # Check if the log file exists
         if not os.path.exists(log_file):
-            self.create_file()
+            FileUtility.create_file(log_file)
 
     def log(self, message):
 
@@ -52,8 +54,4 @@ class Logger:
 
     def file_exists(self):
         return os.path.exists(self.log_file)
-    
-    def create_file(self):
-        if not self.file_exists():
-            with open(self.log_file, 'w') as f:
-                f.write('')
+

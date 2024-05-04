@@ -3,10 +3,11 @@ import unittest
 from utils.logger.LoggerFactory import LoggerFactory
 from utils.logger.Logger import Logger
 
+from utils.constants import LOGGER_FILE_SUFFIX
+
 class TestLogger(unittest.TestCase):
     def setUp(self):
-        self.logger = LoggerFactory.make_logger('test.log.txt')
-        self.logger.create_file()
+        self.logger = LoggerFactory.make_logger(f'test{LOGGER_FILE_SUFFIX}')
 
         self.loggers = [self.logger]
 
@@ -14,14 +15,16 @@ class TestLogger(unittest.TestCase):
         for logger in self.loggers:
             logger.delete()
 
+            del logger
+
     def test_factory(self):
-        logger = LoggerFactory.make_logger('test.log.txt')
+        logger = LoggerFactory.make_logger(f'test{LOGGER_FILE_SUFFIX}')
         self.assertEqual(logger, self.logger)
 
-        logger2 = LoggerFactory.make_logger('test.log.txt')
+        logger2 = LoggerFactory.make_logger(f'test{LOGGER_FILE_SUFFIX}')
         self.assertEqual(logger, logger2)
 
-        logger3 = LoggerFactory.make_logger('test2.log.txt')
+        logger3 = LoggerFactory.make_logger(f'test2{LOGGER_FILE_SUFFIX}')
         self.assertEqual(logger, logger2)
         self.assertNotEqual(logger2, logger3)
         
@@ -48,20 +51,22 @@ class TestLogger(unittest.TestCase):
         self.assertFalse(self.logger.file_exists())
 
     def test_file_exists(self):
-        self.assertTrue(self.logger.file_exists())
+        logger = LoggerFactory.make_logger(f'test5{LOGGER_FILE_SUFFIX}')
+        self.assertTrue(logger.file_exists())
 
-        self.logger.delete()
-        self.assertFalse(self.logger.file_exists())
+        logger.delete()
+
+        self.assertFalse(logger.file_exists())
 
     def test_log_file_suffix(self):
         with self.assertRaises(ValueError):
-            Logger('test.log')
+            Logger('test.log.txt')
         
         with self.assertRaises(ValueError):
             Logger('test.txt')
 
     def test_read_file_not_exists(self):
-        logger = LoggerFactory.make_logger('test2.log.txt')
+        logger = LoggerFactory.make_logger(f'test2{LOGGER_FILE_SUFFIX}')
 
         logger.delete()
 

@@ -24,7 +24,7 @@ class Printer:
         print(f'\033[93mWarning: {message}\033[0m')
 
     def success(self, message):
-        print(f'\033[92mSuccess: {message}\033[0m')
+        print(f'\033[92m{message}\033[0m')
 
     def info(self, message):
-        print(f'\033[94mInfo: {message}\033[0m')
+        print(f'\033[94m{message}\033[0m')
