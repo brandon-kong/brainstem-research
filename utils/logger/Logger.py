@@ -28,7 +28,7 @@ class Logger:
         if not os.path.exists(log_file):
             FileUtility.create_file(log_file)
 
-    def log(self, message):
+    def log(self, message: str):
 
         # get the current time
         time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
