@@ -54,6 +54,22 @@ class DataTree(Generic[T]):
 
         return current_dict
     
+    def remove_data(self, key: str):
+        if not key:
+            raise ValueError('Key cannot be empty')
+        
+        keys = key.split('/')
+        current_dict: DataNode = self.data
+
+        for key in keys[:-1]:
+            if key not in current_dict:
+                return 
+            
+            current_dict = current_dict.get(key, None)
+
+        if keys[-1] in current_dict:
+            del current_dict[keys[-1]]
+    
     def length(self) -> int:
         return self.length_recursive(self.data)
     

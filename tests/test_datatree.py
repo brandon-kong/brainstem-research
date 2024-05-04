@@ -57,6 +57,16 @@ class TestDataTree(unittest.TestCase):
         test_tree.add_data('test4', 'test')
         self.assertEqual(test_tree.length(), 3)
 
+    def test_remove_data(self):
+        self.data_tree.add_data('test', 'test')
+        self.assertEqual(self.data_tree.get_data('test'), 'test')
+
+        self.data_tree.remove_data('test')
+        self.assertIsNone(self.data_tree.get_data('test'))
+
+    def test_remove_data_invalid_key(self):
+        self.assertRaises(ValueError, self.data_tree.remove_data, '')
+
     def benchmark_add_data(self):
         for i in range(100000):
             self.data_tree.add_data(f'test{i}', 'test')
