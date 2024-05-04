@@ -23,3 +23,5 @@ class DataProvider(Generic[T]):
     
     def __str__(self):
         return str(self.data)
+    
+    

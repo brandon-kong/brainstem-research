@@ -1,10 +1,11 @@
-from providers.data.DataProvider import DataProvider
+from utils.Logger import Logger
 
 def main ():
-    data_provider = DataProvider()
-    
-    data_provider.add_data('test', 'test')
-    print(data_provider.get_data('test'))
+    logger = Logger()
+    logger.log('Hello, World!')
+    print(logger.read())
+    logger.clear()
+    print(logger.read())
 
 if __name__ == '__main__':
     main()

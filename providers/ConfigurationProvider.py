@@ -1,6 +1,6 @@
 from .data.DataProvider import DataProvider
 
-from typing import Union, Dict
+from typing import Union, Dict, Final
 
 type JSONable = Union[str, int, float, bool, None, Dict[str, JSONable]]
 
@@ -10,7 +10,7 @@ class ConfigurationProvider:
     """
     
     __instance: 'ConfigurationProvider' = None
-    data_provider: DataProvider[JSONable] = DataProvider[JSONable]()
+    data_provider: Final[DataProvider[JSONable]] = DataProvider[JSONable]()
 
     def __new__(cls) -> 'ConfigurationProvider':
         if cls.__instance is None:
