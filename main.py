@@ -14,14 +14,12 @@ def main ():
     printer.info('\nWelcome to the Brainstem Research Toolkit!\n')
     printer.print('This program will help you analyze and visualize data from the brainstem.\n')
 
-    printer.print('Please select an option from the menu below:\n')
-
     options = {
-        '1. Perform K-Means Clustering': lambda: printer.print('Print'),
-        '2. Perform PCA': lambda: printer.print('Print'),
-        '3. Perform t-SNE': lambda: printer.print('Print'),
-        '4. Exit': lambda: {
-            printer.print('Exiting program...'),
+        'Perform K-Means Clustering': lambda: printer.print('Print'),
+        'Perform PCA': lambda: printer.print('Print'),
+        'Perform t-SNE': lambda: printer.print('Print'),
+        'Exit': lambda: {
+            printer.error('Exiting program...'),
             logger.log('Program ended.'),
             exit()
         }

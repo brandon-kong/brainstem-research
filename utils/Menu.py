@@ -15,9 +15,9 @@ class Menu:
 
     ```python
     options = {
-        '1. Perform K-means clustering': lambda: print('Performing K-means clustering'),
-        '2. Perform PCA': lambda: print('Performing PCA'),
-        '3. Perform t-SNE': lambda: print('Performing t-SNE'),
+        'Perform K-means clustering': lambda: print('Performing K-means clustering'),
+        'Perform PCA': lambda: print('Performing PCA'),
+        'Perform t-SNE': lambda: print('Performing t-SNE'),
     }
 
     menu = Menu(options)
@@ -26,20 +26,24 @@ class Menu:
     ```
 
     """
-    def __init__(self, options: Options):
+    def __init__(self, options: Options, start_message: str = 'Please select an option from the menu below:'):
         self.options = options
+        self.start_message = start_message
 
         self.printer = Printer()
         self.logger = LoggerFactory.make_logger('menu.log')
 
     def run(self):
         while True:
-            self.printer.print('Please select an option from the menu below:\n')
+            self.printer.print(f'{self.start_message}\n')
             
             enumerated = enumerate(self.options)
             
             for index, option in enumerate(self.options):
-                self.printer.print(f'{index + 1}. {option}')
+                self.printer.info(f'{index + 1}. {option}')
+
+            # Print an extra line
+            print()
 
             choice = input('Enter your choice: ')
 
