@@ -1,4 +1,3 @@
-import pandas as pd
 from typing import Dict, Union, Generic, TypeVar
 
 

@@ -1,4 +1,4 @@
-from typing import Union, Dict, Type
+from typing import Union, Dict, Type, TypedDict
 
 # TYPES
 
@@ -26,10 +26,10 @@ CONFIG_KEYS: Dict[str, Type] = {
     
     'LOGGING': {
         'LEVEL': str,
-        'FILE': str,
+        'LOG_FILE': str
     },
 
-    'LOAD_GENES_AT_STARTUP': bool,
+    'LOAD_GENES_AT_STARTUP': bool
     
 }
 
