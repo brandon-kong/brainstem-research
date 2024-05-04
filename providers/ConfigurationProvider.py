@@ -30,14 +30,19 @@ class ConfigurationProvider:
     def load_configuration(self, configuration: Dict[str, JSONable], valid_keys: Dict[str, type]):
         for key, data in configuration.items():
             if key in valid_keys:
-                if isinstance(data, valid_keys[key]):
+                valid_type_or_dict = valid_keys[key]
+                if isinstance(valid_type_or_dict, dict):
+                    # If the valid "type" is actually a dictionary, we need to handle it separately
+                    if isinstance(data, dict):
+                        self.load_configuration(data, valid_type_or_dict)
+                    else:
+                        print(f"Invalid type for key: {key}. Expected dict, got {type(data)}")
+                elif isinstance(data, valid_type_or_dict):
                     self.add_configuration(key, data)
                 else:
-                    # Invalid type
-                    self.printer.warning(f"Invalid type for key: {key}. Expected {valid_keys[key]}, got {type(data)}")
+                    print(f"Invalid type for key: {key}. Expected {valid_type_or_dict}, got {type(data)}")
             else:
-                # Invalid key
-                self.printer.warning(f"Invalid key: {key}")
+                print(f"Invalid key: {key}")
     
     def add_configuration(self, key: str, data: JSONable):
         self.data_provider.add_data(key, data)

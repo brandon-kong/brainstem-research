@@ -10,7 +10,7 @@ type JSONable = Union[str, int, float, bool, None, Dict[str, JSONable]]
 LOGGER_PATH = 'logs/'
 LOGGER_FILE_SUFFIX = '.log'
 
-LOG_FILE = f'{LOGGER_PATH}logger{LOGGER_FILE_SUFFIX}'
+LOG_FILE = f'{LOGGER_PATH}program{LOGGER_FILE_SUFFIX}'
 
 # Path to the data directory
 DATA_DIR = 'data/'

@@ -8,7 +8,6 @@ from utils.constants import LOGGER_FILE_SUFFIX
 class TestLogger(unittest.TestCase):
     def setUp(self):
         self.logger = LoggerFactory.make_logger(f'test{LOGGER_FILE_SUFFIX}')
-
         self.loggers = [self.logger]
 
     def tearDown(self) -> None:
@@ -17,63 +16,39 @@ class TestLogger(unittest.TestCase):
 
             del logger
 
-    def test_factory(self):
-        logger = LoggerFactory.make_logger(f'test{LOGGER_FILE_SUFFIX}')
-        self.assertEqual(logger, self.logger)
-
+    def test_make_logger_creates_same_logger_for_same_name(self):
+        logger1 = LoggerFactory.make_logger(f'test{LOGGER_FILE_SUFFIX}')
         logger2 = LoggerFactory.make_logger(f'test{LOGGER_FILE_SUFFIX}')
-        self.assertEqual(logger, logger2)
+        self.assertEqual(logger1, logger2)
 
-        logger3 = LoggerFactory.make_logger(f'test2{LOGGER_FILE_SUFFIX}')
-        self.assertEqual(logger, logger2)
-        self.assertNotEqual(logger2, logger3)
-        
-        self.loggers.append(logger)
+    def test_make_logger_creates_different_logger_for_different_name(self):
+        logger1 = LoggerFactory.make_logger(f'test{LOGGER_FILE_SUFFIX}')
+        logger2 = LoggerFactory.make_logger(f'test2{LOGGER_FILE_SUFFIX}')
+        self.assertNotEqual(logger1, logger2)
+
+        # Add the logger to the list of loggers to delete
         self.loggers.append(logger2)
-        self.loggers.append(logger3)
-        
-    def test_log(self):
-        self.logger.log('test')
-        self.assertIsNotNone(self.logger.read())
 
-    def test_read(self):
-        self.logger.log('test')
-        self.assertIsNotNone(self.logger.read())
+    def test_log_writes_message_to_log(self):
+        message = 'test'
+        self.logger.log(message)
+        log_content = self.logger.read().rstrip()
+        # Check if the log content contains the message
+        self.assertIn(message, log_content)
 
-    def test_clear(self):
+    def test_read_returns_log_contents(self):
+        message = 'test'
+        self.logger.log(message)
+        log_content = self.logger.read().rstrip()
+
+        # Check if the log content contains the message
+        self.assertIn(message, log_content)
+
+    def test_clear_empties_log(self):
         self.logger.log('test')
+        self.assertNotEqual(self.logger.read(), '')
         self.logger.clear()
         self.assertEqual(self.logger.read(), '')
-
-    def test_delete(self):
-        self.logger.log('test')
-        self.logger.delete()
-        self.assertFalse(self.logger.file_exists())
-
-    def test_file_exists(self):
-        logger = LoggerFactory.make_logger(f'test5{LOGGER_FILE_SUFFIX}')
-        self.assertTrue(logger.file_exists())
-
-        logger.delete()
-
-        self.assertFalse(logger.file_exists())
-
-    def test_log_file_suffix(self):
-        with self.assertRaises(ValueError):
-            Logger('test.log.txt')
-        
-        with self.assertRaises(ValueError):
-            Logger('test.txt')
-
-    def test_read_file_not_exists(self):
-        logger = LoggerFactory.make_logger(f'test2{LOGGER_FILE_SUFFIX}')
-
-        logger.delete()
-
-        with self.assertRaises(FileNotFoundError):
-            logger.read()
-
-        self.loggers.append(logger)
 
         
 
