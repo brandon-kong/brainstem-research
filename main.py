@@ -1,7 +1,7 @@
-from utils.Logger import Logger
+from utils.logger.LoggerFactory import LoggerFactory
 
 def main ():
-    logger = Logger()
+    logger = LoggerFactory.make_logger('test.log.txt')
     logger.log('Hello, World!')
     print(logger.read())
     logger.clear()

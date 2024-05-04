@@ -12,15 +12,6 @@ class Logger:
     """
     The Logger class is a singleton class that logs messages to a file.
     """
-
-    __instance: 'Logger' = None
-
-    def __new__(cls, log_file: str) -> 'Logger':
-        if cls.__instance is None:
-            cls.__instance = super(Logger, cls).__new__(cls)
-            cls.__instance.__init__(log_file)
-        
-        return cls.__instance
     
     def __init__(self, log_file: str):
 
@@ -28,12 +19,11 @@ class Logger:
         if not log_file.endswith(log_file_suffix):
             raise ValueError('Log file must have the correct suffix')
         
+        self.log_file = log_file
+        
         # Check if the log file exists
         if not os.path.exists(log_file):
-            with open(log_file, 'w') as f:
-                f.write('')
-
-        self.log_file = log_file
+            self.create_file()
 
     def log(self, message):
         with open(self.log_file, 'a') as f:
@@ -57,3 +47,8 @@ class Logger:
 
     def file_exists(self):
         return os.path.exists(self.log_file)
+    
+    def create_file(self):
+        if not self.file_exists():
+            with open(self.log_file, 'w') as f:
+                f.write('')

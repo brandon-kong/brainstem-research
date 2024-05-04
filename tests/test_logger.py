@@ -1,10 +1,12 @@
 import unittest
 
-from utils.Logger import Logger
+from utils.logger.LoggerFactory import LoggerFactory
+from utils.logger.Logger import Logger
 
 class TestLogger(unittest.TestCase):
     def setUp(self):
-        self.logger = Logger('test.log.txt')
+        self.logger = LoggerFactory.make_logger('test.log.txt')
+        self.logger.create_file()
         
         self.loggers = [self.logger]
 
@@ -12,16 +14,16 @@ class TestLogger(unittest.TestCase):
         for logger in self.loggers:
             logger.delete()
 
-    def test_singleton(self):
-        logger = Logger('test2.log.txt')
+    def test_factory(self):
+        logger = LoggerFactory.make_logger('test.log.txt')
         self.assertEqual(logger, self.logger)
 
-        logger2 = Logger('test2.log.txt')
+        logger2 = LoggerFactory.make_logger('test.log.txt')
         self.assertEqual(logger, logger2)
 
-        logger3 = Logger('test.log.txt')
-        self.assertEqual(logger, logger3)
-        self.assertEqual(logger2, logger3)
+        logger3 = LoggerFactory.make_logger('test2.log.txt')
+        self.assertEqual(logger, logger2)
+        self.assertNotEqual(logger2, logger3)
         
         self.loggers.append(logger)
         self.loggers.append(logger2)
@@ -59,7 +61,7 @@ class TestLogger(unittest.TestCase):
             Logger('test.txt')
 
     def test_read_file_not_exists(self):
-        logger = Logger('test2.log.txt')
+        logger = LoggerFactory.make_logger('test2.log.txt')
 
         logger.delete()
 
