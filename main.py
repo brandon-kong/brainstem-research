@@ -6,7 +6,7 @@ from utils.Printer import Printer
 from utils.FileUtility import FileUtility
 from utils.InputUtility import InputUtility
 
-from utils.constants import CONFIG_FILE, LOG_FILE
+from utils.constants import CONFIG_FILE, LOG_FILE, CONFIG_KEYS
 
 printer = Printer()
 logger = LoggerFactory.make_logger(LOG_FILE)
@@ -19,7 +19,7 @@ def exit_program():
 
 def main ():
     # Instantiate singletons and providers
-    config = ConfigurationProvider()
+    config = ConfigurationProvider(printer, logger)
 
     # Log the start of the program
     logger.log('Starting program...')
@@ -46,7 +46,7 @@ def main ():
         # Load the configuration
 
         try:
-            config.load_configuration(config_file)
+            config.load_configuration(config_file, CONFIG_KEYS)
             printer.success(f'Configuration loaded successfully: {config.length()} config(s) loaded.\n')
 
         except Exception as e:
@@ -62,7 +62,7 @@ def main ():
         'Exit': exit_program
     }
     # Print the menu
-    menu = Menu(options)
+    menu = Menu(options, printer, logger)
 
     # Run the menu
     menu.run()

@@ -1,3 +1,3 @@
 {
-    "loadGenesAtStartup": false
+    "LOAD_GENES_AT_STARTUP": false
 }

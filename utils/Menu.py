@@ -26,12 +26,18 @@ class Menu:
     ```
 
     """
-    def __init__(self, options: Options, start_message: str = 'Please select an option from the menu below:'):
+    def __init__(
+            self, options: Options, 
+            printer: Printer,
+            logger: LoggerFactory,
+            start_message: str = 'Please select an option from the menu below:',
+            ):
+        
         self.options = options
         self.start_message = start_message
 
-        self.printer = Printer()
-        self.logger = LoggerFactory.make_logger('menu.log')
+        self.printer = printer
+        self.logger = logger
 
     def run(self):
         while True:

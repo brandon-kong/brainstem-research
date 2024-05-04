@@ -1,3 +1,9 @@
+from typing import Union, Dict, Type
+
+# TYPES
+
+type JSONable = Union[str, int, float, bool, None, Dict[str, JSONable]]
+
 # GENERAL
 
 # Path to the log file
@@ -9,8 +15,23 @@ LOG_FILE = f'{LOGGER_PATH}logger{LOGGER_FILE_SUFFIX}'
 # Path to the data directory
 DATA_DIR = 'data/'
 
+# CONFIGURATION
+
 # Configuration file name
 CONFIG_FILE = 'config.json'
+
+# Valid configuration keys
+CONFIG_KEYS: Dict[str, Type] = {
+    'DATA_DIR': str,
+    
+    'LOGGING': {
+        'LEVEL': str,
+        'FILE': str,
+    },
+
+    'LOAD_GENES_AT_STARTUP': bool,
+    
+}
 
 # Logging levels
 LOGGING_LEVELS = {
