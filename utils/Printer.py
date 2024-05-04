@@ -32,6 +32,9 @@ class Printer:
     def debug(self, message: str):
         print(f'\033[95m{message}\033[0m')
 
+    def loading(self, message: str):
+        print(f'\033[96m{message}\033[0m')
+
     def custom(self, message: str, color: str):
         print(f'\033[{color}m{message}\033[0m')
 
