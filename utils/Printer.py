@@ -1,4 +1,7 @@
 class Printer:
+    """
+    Singleton class to print messages with colors
+    """
 
     __instance: 'Printer' = None
 
