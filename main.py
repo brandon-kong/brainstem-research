@@ -1,9 +1,13 @@
+from providers.ConfigurationProvider import ConfigurationProvider
+
 from utils.logger.LoggerFactory import LoggerFactory
 from utils.Menu import Menu
 from utils.Printer import Printer
 
 def main ():
     # Instantiate singletons and providers
+    config = ConfigurationProvider()
+    
     printer = Printer()
     logger = LoggerFactory.make_logger('logs/logger.log')
 

@@ -1,6 +1,6 @@
 from typing import Dict, Callable
 
-from utils.Printer import Printer
+from utils.Printer import Printer, Color
 from utils.logger.LoggerFactory import LoggerFactory
 
 type Options = Dict[str, Callable[[], None]]
@@ -40,7 +40,7 @@ class Menu:
             enumerated = enumerate(self.options)
             
             for index, option in enumerate(self.options):
-                self.printer.info(f'{index + 1}. {option}')
+                self.printer.custom(f'{index + 1}. {option}', Color.CYAN)
 
             # Print an extra line
             print()
