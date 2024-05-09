@@ -35,7 +35,7 @@ def main ():
 
     if config_file is None:
         # Prompt the user to create a new configuration file
-        printer.warning('Configuration file not found.')
+        printer.warning('Configuration file not found.\n')
         
         if not InputUtility.get_yes_no_input('Would you like to create a new configuration file?'):
             exit_program()
