@@ -8,35 +8,36 @@ from utils.InputUtility import InputUtility
 
 from utils.constants import CONFIG_FILE, LOGGER_FILE_SUFFIX, LOG_FILE, CONFIG_KEYS
 
-printer = Printer()
 logger = LoggerFactory.make_logger(LOGGER_FILE_SUFFIX, LOG_FILE)
 
+
 def exit_program():
-    printer.error('Exiting program...\n')
+    Printer.error('Exiting program...')
     logger.log('Program ended.')
 
     exit()
 
-def main ():
+
+def main():
     # Instantiate singletons and providers
-    config = ConfigurationProvider(printer, logger)
+    config = ConfigurationProvider()
 
     # Log the start of the program
     logger.log('Starting program...')
 
     # Print a message
-    printer.info('\nWelcome to the Brainstem Research Toolkit!')
-    printer.print('This program will help you analyze and visualize data from the brainstem.\n')
+    Printer.info('\nWelcome to the Brainstem Research Toolkit!')
+    Printer.print('This program will help you analyze and visualize data from the brainstem.\n')
 
-    printer.loading('Loading configuration...')
+    Printer.loading('Loading configuration...')
 
     # Read the config file
     config_file = FileUtility.read_json(CONFIG_FILE)
 
     if config_file is None:
         # Prompt the user to create a new configuration file
-        printer.warning('Configuration file not found.')
-        
+        Printer.warning('Configuration file not found.')
+
         if not InputUtility.get_yes_no_input('Would you like to create a new configuration file?'):
             exit_program()
 
@@ -47,37 +48,34 @@ def main ():
 
         try:
             config.load_configuration(config_file, CONFIG_KEYS)
-            printer.success(f'Configuration loaded successfully: {config.length()} config(s) loaded.')
+            Printer.success(f'Configuration loaded successfully: {config.length()} config(s) loaded.')
 
         except Exception as e:
-            printer.error(f'Error loading configuration: {e}\n')
+            Printer.error(f'Error loading configuration: {e}\n')
             exit_program()
-
-
 
     options = {
         'Perform K-Means Clustering': lambda: Menu({
-            'Perform K-Means Clustering on all data': lambda: printer.print('Print'),
-            'Perform K-Means Clustering on a subset of data': lambda: printer.print('Print'),
-            'Perform K-Means Clustering on a subset of genes': lambda: printer.print('Print'),
-            'Perform K-Means Clustering on a subset of samples': lambda: printer.print('Print'),
-            'Perform K-Means Clustering on a subset of genes and samples': lambda: printer.print('Print'),
-            'Back': lambda: printer.print('Print')
-        }, printer, logger).run()
+            'Perform K-Means Clustering on all data': lambda: Printer.print('Print'),
+            'Perform K-Means Clustering on a subset of data': lambda: Printer.print('Print'),
+            'Perform K-Means Clustering on a subset of genes': lambda: Printer.print('Print'),
+            'Perform K-Means Clustering on a subset of samples': lambda: Printer.print('Print'),
+            'Perform K-Means Clustering on a subset of genes and samples': lambda: Printer.print('Print'),
+            'Back': lambda: Printer.print('Print')
+        }).run()
         ,
 
-        'Perform PCA': lambda: printer.print('Print'),
-        'Perform t-SNE': lambda: printer.print('Print'),
+        'Perform PCA': lambda: Printer.print('Print'),
+        'Perform t-SNE': lambda: Printer.print('Print'),
     }
     # Print the menu
-    menu = Menu(options, printer, logger, include_exit=True, include_back=False)
+    menu = Menu(options, include_exit=True, include_back=False)
 
     # Run the menu
     menu.run()
 
     # Log the end of the program
     exit_program()
-    
 
 
 if __name__ == '__main__':

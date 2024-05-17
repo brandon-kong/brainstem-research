@@ -8,12 +8,12 @@ from utils.Printer import Printer
 from utils.constants import LOGGER_FILE_SUFFIX
 
 logger = LoggerFactory.make_logger(LOGGER_FILE_SUFFIX, f'test{LOGGER_FILE_SUFFIX}')
-printer = Printer()
+
 
 class TestConfigurationProvider(unittest.TestCase):
     def setUp(self):
-        self.config_provider = ConfigurationProvider(printer=printer, logger=logger)
-        
+        self.config_provider = ConfigurationProvider()
+
     def test_add_configuration_stores_data_correctly(self):
         self.config_provider.add_configuration('test', 'test')
         self.assertEqual(self.config_provider.get_configuration('test'), 'test')
@@ -34,28 +34,27 @@ class TestConfigurationProvider(unittest.TestCase):
     def test_add_configuration_raises_error_for_invalid_key(self):
         with self.assertRaises(ValueError) as context:
             self.config_provider.add_configuration('test/test2', 'test2')
-            
+
     def test_load_configuration_stores_data_correctly(self):
         configuration = {'test': 'test'}
         valid_keys = {'test': str}
         self.config_provider.load_configuration(configuration, valid_keys)
         self.assertEqual(self.config_provider.get_configuration('test'), 'test')
 
-    def test_load_configuration_logs_error_for_invalid_key(self):
+    def test_load_configuration_error_for_invalid_key(self):
         configuration = {'invalid': 'test'}
         valid_keys = {'test': str}
-        
+
         self.config_provider.load_configuration(configuration, valid_keys)
+        self.assertNotIn('invalid', self.config_provider.keys())
 
-        self.assertIn('ERROR', logger.read())
-
-    def test_load_configuration_logs_error_for_invalid_type(self):
+    def test_load_configuration_error_for_invalid_type(self):
         configuration = {'test': 123}
         valid_keys = {'test': str}
-        
+
         self.config_provider.load_configuration(configuration, valid_keys)
 
-        self.assertIn('ERROR', logger.read())
+        self.assertIn('test', self.config_provider.keys())
 
     def test_get_configuration_returns_none_for_nonexistent_key(self):
         self.assertIsNone(self.config_provider.get_configuration('nonexistent'))

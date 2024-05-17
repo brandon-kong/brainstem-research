@@ -5,6 +5,7 @@ from utils.logger.Logger import Logger
 
 from utils.constants import LOGGER_FILE_SUFFIX
 
+
 class TestLogger(unittest.TestCase):
     def setUp(self):
         self.logger = LoggerFactory.make_logger(LOGGER_FILE_SUFFIX, f'test{LOGGER_FILE_SUFFIX}')
@@ -49,6 +50,3 @@ class TestLogger(unittest.TestCase):
         self.assertNotEqual(self.logger.read(), '')
         self.logger.clear()
         self.assertEqual(self.logger.read(), '')
-
-        
-

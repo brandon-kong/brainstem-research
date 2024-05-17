@@ -1,9 +1,9 @@
-import pandas as pd
 from typing import Dict, Union, TypeVar, Generic
 
 from .DataTree import DataTree
 
 T = TypeVar('T')
+
 
 class DataProvider(Generic[T]):
     """
@@ -17,14 +17,24 @@ class DataProvider(Generic[T]):
 
     def get_data(self, key: str) -> Union[T, None]:
         return self.data.get_data(key)
-    
+
     def remove_data(self, key: str):
         self.data.remove_data(key)
 
     def length(self) -> int:
         return self.data.length()
-    
+
+    def keys(self):
+        return self.data.keys()
+
     def __str__(self):
         return str(self.data)
-    
-    
+
+    def __contains__(self, key: str) -> bool:
+        return key in self.data
+
+    def __getitem__(self, key: str) -> T:
+        return self.get_data(key)
+
+    def __setitem__(self, key: str, data: T | Dict[str, Union[T, 'DataTree']]):
+        self.add_data(key, data)

@@ -2,7 +2,7 @@ from typing import Union, Dict, Type, TypedDict
 
 # TYPES
 
-type JSONable = Union[str, int, float, bool, None, Dict[str, JSONable]]
+type JSONABLE = Union[str, int, float, bool, None, Dict[str, JSONABLE]]
 
 # GENERAL
 
