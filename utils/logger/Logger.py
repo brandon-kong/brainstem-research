@@ -9,7 +9,6 @@ from datetime import datetime
 
 from utils.FileUtility import FileUtility
 
-from utils.constants import LOGGER_FILE_SUFFIX
 
 class Logger:
     """
@@ -22,16 +21,16 @@ class Logger:
         'ERROR': 3,
         'CRITICAL': 4
     }
-    
+
     def __init__(self, logger_suffix: str, log_file: str, level: str = 'INFO'):
 
         # Check if the log file has the correct suffix
         if not log_file.endswith(logger_suffix):
             raise ValueError('Log file must have the correct suffix')
-        
+
         self.log_file = log_file
         self.level = self.LEVELS.get(level.upper(), 'INFO')
-        
+
         # Check if the log file exists
         if not os.path.exists(log_file):
             FileUtility.create_file(log_file)
@@ -64,10 +63,10 @@ class Logger:
         # make sure the file exists
         if not self.file_exists():
             raise FileNotFoundError('Log file does not exist')
-        
+
         with open(self.log_file, 'r') as f:
             return f.read()
-        
+
     def clear(self):
         with open(self.log_file, 'w') as f:
             f.write('')
@@ -78,4 +77,3 @@ class Logger:
 
     def file_exists(self):
         return os.path.exists(self.log_file)
-

@@ -1,4 +1,4 @@
-.venv
+.venv/
 .env
 
 # Byte-compiled / optimized / DLL files
@@ -15,5 +15,6 @@ __pycache__/
 config.json
 
 # Data
-data/*.csv
-data/*.json
+data/**/*.csv
+data/**/*.json
+data/

@@ -1,8 +1,5 @@
 from utils.Printer import Printer
 
-printer = Printer()
-
-
 class InputUtility:
     @staticmethod
     def get_int_input(prompt: str) -> int:
@@ -10,7 +7,7 @@ class InputUtility:
             try:
                 return int(input(prompt))
             except ValueError:
-                printer.error("Invalid input. Please enter an integer.")
+                Printer.error("Invalid input. Please enter an integer.")
 
     @staticmethod
     def get_float_input(prompt: str) -> float:
@@ -18,7 +15,7 @@ class InputUtility:
             try:
                 return float(input(prompt))
             except ValueError:
-                printer.error("Invalid input. Please enter a number.")
+                Printer.error("Invalid input. Please enter a number.")
 
     @staticmethod
     def get_string_input(prompt: str) -> str:
@@ -30,7 +27,7 @@ class InputUtility:
             try:
                 return bool(input(prompt))
             except ValueError:
-                printer.error("Invalid input. Please enter a boolean value.")
+                Printer.error("Invalid input. Please enter a boolean value.")
 
     @staticmethod
     def get_yes_no_input(prompt: str) -> bool:
@@ -46,4 +43,4 @@ class InputUtility:
                 else:
                     raise ValueError
             except ValueError:
-                printer.error("Invalid input. Please enter 'y' or 'n'.\n")
+                Printer.error("Invalid input. Please enter 'y' or 'n'.\n")

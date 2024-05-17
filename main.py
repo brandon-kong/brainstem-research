@@ -1,4 +1,5 @@
 from providers.ConfigurationProvider import ConfigurationProvider
+from providers.DataFrameProvider import DataFrameProvider
 
 from utils.logger.LoggerFactory import LoggerFactory
 from utils.Menu import Menu
@@ -6,6 +7,8 @@ from utils.Printer import Printer
 from utils.FileUtility import FileUtility
 from utils.InputUtility import InputUtility
 from utils.DataFrameLoader import DataFrameLoader
+
+from utils.DictionaryUtility import count
 
 from utils.constants import CONFIG_FILE, LOGGER_FILE_SUFFIX, LOG_FILE, CONFIG_KEYS
 
@@ -22,6 +25,7 @@ def exit_program():
 def main():
     # Instantiate singletons and providers
     config = ConfigurationProvider()
+    dataframe_provider = DataFrameProvider()
 
     # Log the start of the program
     logger.log('Starting program...')
@@ -61,7 +65,10 @@ def main():
 
     dataframes = DataFrameLoader.load_dataframes_in_directory('data')
 
-    Printer.success(f'{len(dataframes)} dataframe(s) loaded successfully.')
+    for key, value in dataframes.items():
+        dataframe_provider.add_dataframe(key, value)
+
+    Printer.success(f'{len(dataframe_provider)} dataframe(s) loaded successfully.')
 
     options = {
         'Perform K-Means Clustering': lambda: Menu({
@@ -71,8 +78,7 @@ def main():
             'Perform K-Means Clustering on a subset of samples': lambda: Printer.print('Print'),
             'Perform K-Means Clustering on a subset of genes and samples': lambda: Printer.print('Print'),
             'Back': lambda: Printer.print('Print')
-        }).run()
-        ,
+        }).run(),
 
         'Perform PCA': lambda: Printer.print('Print'),
         'Perform t-SNE': lambda: Printer.print('Print'),

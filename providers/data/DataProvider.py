@@ -10,7 +10,10 @@ class DataProvider(Generic[T]):
     The DataProvider class is a wrapper around the DataTree class that provides a more user-friendly interface.
     """
 
-    data: DataTree[T] = DataTree[T]()
+    data: DataTree[T]
+
+    def __init__(self) -> None:
+        self.data = DataTree[T]()
 
     def add_data(self, key: str, data: T):
         self.data.add_data(key, data)

@@ -9,16 +9,17 @@ class DataFrameLoader:
     @staticmethod
     def load_dataframes_in_directory(directory: str) -> Dict[str, dd.DataFrame]:
         """
-        Load all dataframes in a directory.
+        Load all dataframes in a directory, including those in subdirectories.
         :param directory: The directory to load the dataframes from.
         :return: A dictionary of dataframes.
         """
         dataframes = {}
-        for file in os.listdir(directory):
-            if file.endswith('.csv'):
-                # get the name of the file without the extension
-                name = os.path.splitext(file)[0]
-                dataframes[name] = dd.read_csv(os.path.join(directory, file))
+        for root, _, files in os.walk(directory):
+            for file in files:
+                if file.endswith('.csv'):
+                    path = os.path.join(root, file)
+                    name = os.path.splitext(os.path.relpath(path, directory))[0]
+                    dataframes[name] = dd.read_csv(path)
 
         return dataframes
 

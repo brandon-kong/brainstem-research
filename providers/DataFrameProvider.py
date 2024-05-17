@@ -47,3 +47,6 @@ class DataFrameProvider:
 
     def __repr__(self):
         return repr(self.data_provider)
+
+    def __len__(self):
+        return self.length()
