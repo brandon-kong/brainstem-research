@@ -52,12 +52,16 @@ def main():
             Printer.success(f'Configuration loaded successfully: {config.length()} config(s) loaded.')
 
         except Exception as e:
-            Printer.error(f'Error loading configuration: {e}\n')
+            Printer.error(f'Error loading configuration: {e}')
             exit_program()
 
     # Load the data from the data directory
 
+    Printer.loading('\nLoading data...')
+
     dataframes = DataFrameLoader.load_dataframes_in_directory('data')
+
+    Printer.success(f'{len(dataframes)} dataframe(s) loaded successfully.')
 
     options = {
         'Perform K-Means Clustering': lambda: Menu({

@@ -13,3 +13,7 @@ __pycache__/
 
 # Config
 config.json
+
+# Data
+data/*.csv
+data/*.json
