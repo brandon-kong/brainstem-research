@@ -2,6 +2,7 @@ import os
 import json
 
 class FileUtility:
+
     @staticmethod
     def create_directory(path: str):
         directory = os.path.dirname(path)
@@ -19,6 +20,9 @@ class FileUtility:
     def read_file(path: str):
         with open(path, 'r') as f:
             return f.read()
-        
+    
+    @staticmethod
     def read_json(path: str):
+        if not os.path.exists(path):
+            return None
         return json.loads(FileUtility.read_file(path))
