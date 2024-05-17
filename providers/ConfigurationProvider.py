@@ -11,7 +11,13 @@ class ConfigurationProvider:
     The ConfigurationProvider class is a singleton class that provides a way to store and retrieve configuration data.
     """
 
+    __instance = None
     data_provider: Final[DataProvider[JSONABLE]] = DataProvider[JSONABLE]()
+
+    def __new__(cls):
+        if cls.__instance is None:
+            cls.__instance = super(ConfigurationProvider, cls).__new__(cls)
+        return cls.__instance
 
     def __init__(self) -> None:
         pass

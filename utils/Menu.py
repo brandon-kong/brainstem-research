@@ -1,7 +1,6 @@
 from typing import Dict, Callable
 
 from utils.Printer import Printer, Color
-from utils.logger.Logger import Logger
 
 type Options = Dict[str, Callable[[], None]]
 

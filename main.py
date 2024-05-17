@@ -5,6 +5,7 @@ from utils.Menu import Menu
 from utils.Printer import Printer
 from utils.FileUtility import FileUtility
 from utils.InputUtility import InputUtility
+from utils.DataFrameLoader import DataFrameLoader
 
 from utils.constants import CONFIG_FILE, LOGGER_FILE_SUFFIX, LOG_FILE, CONFIG_KEYS
 
@@ -53,6 +54,10 @@ def main():
         except Exception as e:
             Printer.error(f'Error loading configuration: {e}\n')
             exit_program()
+
+    # Load the data from the data directory
+
+    dataframes = DataFrameLoader.load_dataframes_in_directory('data')
 
     options = {
         'Perform K-Means Clustering': lambda: Menu({

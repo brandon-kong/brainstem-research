@@ -1,6 +1,7 @@
 import os
 import json
 
+
 class FileUtility:
 
     @staticmethod
@@ -20,9 +21,17 @@ class FileUtility:
     def read_file(path: str):
         with open(path, 'r') as f:
             return f.read()
-    
+
     @staticmethod
     def read_json(path: str):
         if not os.path.exists(path):
             return None
         return json.loads(FileUtility.read_file(path))
+
+    @staticmethod
+    def get_nested_directory_files(directory: str) -> list[str]:
+        files = []
+        for root, _, filenames in os.walk(directory):
+            for filename in filenames:
+                files.append(os.path.join(root, filename))
+        return files

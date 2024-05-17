@@ -2,6 +2,7 @@ from utils.Printer import Printer
 
 printer = Printer()
 
+
 class InputUtility:
     @staticmethod
     def get_int_input(prompt: str) -> int:
@@ -22,7 +23,7 @@ class InputUtility:
     @staticmethod
     def get_string_input(prompt: str) -> str:
         return input(prompt)
-    
+
     @staticmethod
     def get_bool_input(prompt: str) -> bool:
         while True:
