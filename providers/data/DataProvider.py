@@ -3,8 +3,6 @@ from typing import Dict, Union, TypeVar, Generic
 from .DataTree import DataTree
 
 T = TypeVar('T')
-
-
 class DataProvider(Generic[T]):
     """
     The DataProvider class is a wrapper around the DataTree class that provides a more user-friendly interface.

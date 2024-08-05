@@ -1,3 +1,6 @@
+import signal
+import sys
+
 from providers.ConfigurationProvider import ConfigurationProvider
 from providers.DataFrameProvider import DataFrameProvider
 
@@ -19,7 +22,7 @@ def exit_program():
     Printer.error('Exiting program...')
     logger.log('Program ended.')
 
-    exit()
+    sys.exit(0)
 
 
 def main():
@@ -29,6 +32,9 @@ def main():
 
     # Log the start of the program
     logger.log('Starting program...')
+
+    # Handle SIGINT
+    signal.signal(signal.SIGINT, lambda sig, frame: exit_program())
 
     # Print a message
     Printer.info('\nWelcome to the Brainstem Research Toolkit!')
@@ -60,7 +66,6 @@ def main():
             exit_program()
 
     # Load the data from the data directory
-
     Printer.loading('\nLoading data...')
 
     dataframes = DataFrameLoader.load_dataframes_in_directory('data')

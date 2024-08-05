@@ -1,9 +1,15 @@
 from typing import Union, Dict, Final
 
-from .data.DataProvider import DataProvider
-from utils.constants import JSONABLE
+from providers.data.DataProvider import DataProvider
+from utils.constants import (
+    JSONABLE
+)
 
 from utils.Printer import Printer
+
+from exceptions.ConfigurationExceptions import (
+    ConfigurationLoadException
+)
 
 
 class ConfigurationProvider:
@@ -22,23 +28,30 @@ class ConfigurationProvider:
     def __init__(self) -> None:
         pass
 
+    def _handle_nested_dict(self, key: str, data: JSONABLE, valid_type_or_dict: Dict[str, type]) -> None:
+        if isinstance(data, dict):
+            self.load_configuration(data, valid_type_or_dict)
+        else:
+            raise ConfigurationLoadException(f"Invalid type for key: {key}. Expected dict, got {type(data)}")
+
+    def _validate_and_add(self, key: str, data: JSONABLE, expected_type: type) -> None:
+        if isinstance(data, expected_type):
+            self.add_configuration(key, data)
+        else:
+            raise ConfigurationLoadException(f"Invalid type for key: {key}. Expected {expected_type}, got {type(data)}")
+
     def load_configuration(self, configuration: Dict[str, JSONABLE],
                            valid_keys: Dict[str, Union[type, Dict[str, type]]]) -> None:
         for key, data in configuration.items():
             if key in valid_keys:
                 valid_type_or_dict = valid_keys[key]
                 if isinstance(valid_type_or_dict, dict):
-                    # If the valid "type" is actually a dictionary, we need to handle it separately
-                    if isinstance(data, dict):
-                        self.load_configuration(data, valid_type_or_dict)
-                    else:
-                        Printer.error(f"Invalid type for key: {key}. Expected {valid_type_or_dict}, got {type(data)}")
-                elif isinstance(data, valid_type_or_dict):
-                    self.add_configuration(key, data)
+                    self._handle_nested_dict(key, data, valid_type_or_dict)
                 else:
-                    Printer.error(f"Invalid type for key: {key}. Expected {valid_type_or_dict}, got {type(data)}")
+                    self._validate_and_add(key, data, valid_type_or_dict)
             else:
-                Printer.error(f'Invalid key: {key}')
+                # Invalid key, this doesn't affect the program, so we just log it
+                Printer.warning(f'[ConfigurationProvider] Invalid key: {key}')
 
     def add_configuration(self, key: str, data: JSONABLE):
         self.data_provider.add_data(key, data)
