@@ -36,8 +36,11 @@ export default function Navbar() {
 
             <aside className="flex flex-row shadow justify-between items-center px-6 py-4 w-full min-h-16">
                 <div
-                className={'flex items-center gap-2 text-black'}
+                className={'flex items-center gap-6 text-black'}
                 >
+                    <div
+                    className={'flex items-center gap-2 text-black'}
+                    >
                     <Link
                         target={'_blank'}
                         href={'https://www.depaul.edu'}>
@@ -54,7 +57,7 @@ export default function Navbar() {
                     >
                          x
                         </P>
-                     <Link
+                        <Link
                         target={'_blank'}
                         href={'https://www.rosalindfranklin.edu'}>
                         <Image
@@ -65,10 +68,8 @@ export default function Navbar() {
                             height={40}
                         />
                      </Link>
-                    <Separator
-                        orientation={'vertical'}
-                        className={'h-6 bg-neutral-200 border border-neutral-200'}
-                    />
+                    </div>
+
                     <div>
                         <NavigationMenu>
                             <NavigationMenuList>
@@ -88,6 +89,14 @@ export default function Navbar() {
                                         test
                                     </NavigationMenuContent>
                                 </NavigationMenuItem>
+                                <NavigationMenuItem>
+                                    <NavigationMenuTrigger>
+                                        Data Analysis
+                                    </NavigationMenuTrigger>
+                                    <NavigationMenuContent>
+                                        test
+                                    </NavigationMenuContent>
+                                </NavigationMenuItem>
                             </NavigationMenuList>
                         </NavigationMenu>
                     </div>
@@ -96,12 +105,12 @@ export default function Navbar() {
                      <Button
                         variant={"ghost"}
                         >
-                        Data Pipeline
+                        Documentation
                     </Button>
                      <Button
                         variant={"ghost"}
                         >
-                        Brain Visualization
+                        Help
                     </Button>
 
                     <Separator
