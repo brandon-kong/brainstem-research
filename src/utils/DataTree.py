@@ -1,67 +1,69 @@
-"""
-DataTree class
+from typing import TypeVar, Generic, List, Dict, Tuple, Any
 
-This class is used to store data in a tree structure. It is used to store the data in a tree structure
-analagous to the directory structure in a file system. The tree is stored as a dictionary where the keys
-are the names of the nodes and the values are the data stored in the nodes. 
+T = TypeVar('T')
 
-The data can be of any type and the tree can be of any depth. The tree can be traversed using the get_node method which takes a list
-of keys as input and returns the data stored in the node at the end of the list of keys. The tree can also
-"""
+class Node(Generic[T]):
+    """
+    Node class
 
-class DataTree:
-    def __init__(self):
-        self.tree = {}
+    This class is used to store data in a tree structure. It is used to store the data in a tree structure
+    analagous to the directory structure in a file system.
+    """
+    def __init__(self, data: T):
+        self.data = data
+        self.children: Dict[str, Node[T]] = {}
 
-    def add_node(self, keys, data):
+    def add_child(self, key: str, data: T) -> None:
         """
-        Add a node to the tree
+        Add a child node to the current node
 
         Args:
-            keys (list): List of keys to traverse the tree to the node where the data is to be stored
-            data (any): Data to be stored in the node
+            key (str): Key to access the child node
+            data (any): Data to be stored in the child node
         """
-        node = self.tree
-        for key in keys[:-1]:
-            if key not in node:
-                node[key] = {}
-            node = node[key]
-        node[keys[-1]] = data
+        self.children[key] = Node(data)
 
-    def get_node(self, keys):
+    def get_child(self, key: str) -> T:
         """
-        Get the data stored in a node
+        Get the data stored in a child node
 
         Args:
-            keys (list): List of keys to traverse the tree to the node where the data is stored
+            key (str): Key to access the child node
 
         Returns:
-            any: Data stored in the node
+            any: Data stored in the child node
         """
-        node = self.tree
-        for key in keys:
-            if key not in node:
-                return None
-            node = node[key]
-        return node
+        return self.children[key].data
 
-    def get_tree(self):
+    def get_children(self) -> Dict[str, T]:
         """
-        Get the entire tree
+        Get the data stored in all the child nodes
 
         Returns:
-            dict: The tree
+            dict: Dictionary where the keys are the keys of the child nodes and the values are the data stored in the child nodes
         """
-        return self.tree
+        children = {}
+        for key in self.children:
+            children[key] = self.children[key].data
+        return children
 
-    def set_tree(self, tree):
+    def get_leaf_nodes(self) -> List[Tuple[str, T]]:
         """
-        Set the entire tree
+        Get the leaf nodes of the tree
 
-        Args:
-            tree (dict): The tree
+        Returns:
+            list: List of tuples where the first element is the key of the node and the second element is the data stored in the node
         """
-        self.tree = tree
+        nodes = []
+        def get_nodes_recursive(node, key):
+            for k in node:
+                new_key = key + [k]
+                if len(node[k].children) == 0:
+                    nodes.append((new_key, node[k].data))
+                else:
+                    get_nodes_recursive(node[k].children, new_key)
+        get_nodes_recursive(self.children, [])
+        return nodes
 
     def get_keys(self):
         """
@@ -75,30 +77,13 @@ class DataTree:
             for k in node:
                 new_key = key + [k]
                 keys.append(new_key)
-                get_keys_recursive(node[k], new_key)
-        get_keys_recursive(self.tree, [])
+                get_keys_recursive(node[k].children, new_key)
+        get_keys_recursive(self.children, [])
         return keys
-
-    def get_nodes(self):
+    
+    def get_non_null_nodes(self) -> List[Tuple[List[str], T]]:
         """
-        Get the data stored in all the nodes in the tree
-
-        Returns:
-            list: List of data stored in all the nodes in the tree
-        """
-        nodes = []
-        def get_nodes_recursive(node):
-            for k in node:
-                if isinstance(node[k], dict):
-                    get_nodes_recursive(node[k])
-                else:
-                    nodes.append(node[k])
-        get_nodes_recursive(self.tree)
-        return nodes
-
-    def get_nodes_and_keys(self):
-        """
-        Get the data stored in all the nodes in the tree and the keys of the nodes
+        Get the non-null nodes of the tree
 
         Returns:
             list: List of tuples where the first element is the key of the node and the second element is the data stored in the node
@@ -107,53 +92,79 @@ class DataTree:
         def get_nodes_recursive(node, key):
             for k in node:
                 new_key = key + [k]
-                if isinstance(node[k], dict):
-                    get_nodes_recursive(node[k], new_key)
-                else:
-                    nodes.append((new_key, node[k]))
-        get_nodes_recursive(self.tree, [])
+                if node[k].data is not None:
+                    nodes.append((new_key, node[k].data))
+                get_nodes_recursive(node[k].children, new_key)
+        get_nodes_recursive(self.children, [])
         return nodes
+
+class DataTree(Generic[T]):
+    """
+    DataTree class
+
+    This class is used to store data in a tree structure. It is used to store the data in a tree structure
+    analagous to the directory structure in a file system.
+    """
     
-    def get_nodes_and_keys_with_prefix(self, prefix):
+    def __init__(self):
+        self.root: Node[T] = Node(None)
+
+    def add_node(self, key: List[str], data: T) -> None:
         """
-        Get the data stored in all the nodes in the tree and the keys of the nodes with a given prefix
+        Add a node to the tree
 
         Args:
-            prefix (list): The prefix to filter the keys
+            key (list): List of keys to access the node
+            data (any): Data to be stored in the node
+        """
+        node = self.root
+        for k in key:
+            if k not in node.children:
+                node.add_child(k, None)
+            node = node.children[k]
+        node.data = data
+
+    def get_node(self, key: List[str]) -> T:
+        """
+        Get the data stored in a node
+
+        Args:
+            key (list): List of keys to access the node
+
+        Returns:
+            any: Data stored in the node
+        """
+        node = self.root
+        for k in key:
+            if k not in node.children:
+                return None
+            node = node.children[k]
+        return node.data
+
+    def get_keys(self) -> List[List[str]]:
+        """
+        Get the keys of all the nodes in the tree
+
+        Returns:
+            list: List of keys of all the nodes in the tree
+        """
+        return self.root.get_keys()
+
+    def get_leaf_nodes(self) -> List[Tuple[List[str], T]]:
+        """
+        Get the leaf nodes of the tree
 
         Returns:
             list: List of tuples where the first element is the key of the node and the second element is the data stored in the node
         """
-        nodes = []
-        def get_nodes_recursive(node, key):
-            for k in node:
-                new_key = key + [k]
-                if new_key[:len(prefix)] == prefix:
-                    if isinstance(node[k], dict):
-                        get_nodes_recursive(node[k], new_key)
-                    else:
-                        nodes.append((new_key, node[k]))
-        get_nodes_recursive(self.tree, [])
-        return nodes
+        return self.root.get_leaf_nodes()
     
-    def get_nodes_with_prefix(self, prefix):
+    def __len__(self) -> int:
         """
-        Get the data stored in all the nodes in the tree with a given prefix
-
-        Args:
-            prefix (list): The prefix to filter the keys
+        Get the number of nodes in the tree
+        Non-leaf nodes are not counted
 
         Returns:
-            list: List of data stored in the nodes
+            int: Number of nodes in the tree
         """
-        nodes = []
-        def get_nodes_recursive(node, key):
-            for k in node:
-                new_key = key + [k]
-                if new_key[:len(prefix)] == prefix:
-                    if isinstance(node[k], dict):
-                        get_nodes_recursive(node[k], new_key)
-                    else:
-                        nodes.append(node[k])
-        get_nodes_recursive(self.tree, [])
-        return nodes
+        return len(self.root.get_non_null_nodes())
